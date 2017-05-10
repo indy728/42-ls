@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:14:31 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/09 01:42:25 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/10 01:59:45 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,13 @@ void	sort_files(t_list **lst)
 		hnode = hold->content;
 		scout = scout->next;
 		snode = scout->content;
-		if (*lst == hold && ft_strcmp(hnode->fname, snode->fname) > 0)
+		if (*lst == hold && ft_strcmp(hnode->name, snode->name) > 0)
 		{
 			*lst = hold->next;
 			hold->next = scout->next;
 			scout->next = hold;
 		}
-		else if (ft_strcmp(hnode->fname, snode->fname) > 0)
+		else if (ft_strcmp(hnode->name, snode->name) > 0)
 		{
 			trail->next = hold->next;
 			hold->next = scout->next;
@@ -55,69 +55,102 @@ void	sort_files(t_list **lst)
 	}
 }
 
+static int	mark_options(int ac, char **av, t_options *options, int i)
+{
+	char	*str;
+	int		j;
+
+	if (ac == 1)
+	{
+	   return (0);
+	   options = NULL;
+	}
+		
+
+	str = av[i];
+	while(i < ac && str[0] == '-')
+	{
+		j = 0;
+		while (str[++j])
+		{
+			if (str[j] == 'l')
+				options->l = 1;
+			else if (str[j] == 'R')
+				options->big_r = 1;
+			else if (str[j] == 'a')
+				options->a = 1;
+			else if (str[j] == 'r')
+				options->r = 1;
+			else if (str[j] == 't')
+				options->t = 1;
+		}
+		++i;
+		str = av[i];
+	}
+	return (i);
+}
+
 int main(int ac, char **av)
 {
-	int				len;
+	int				i;
 	DIR				*dirp;
 	struct dirent	*dp;
-	char			*name;
 //	struct stat		test;
 	t_list			*begin_list = NULL;
 	t_file			*node;
 	char			*str;
 	t_list			*scout;
-//	int				i = 0;
+	t_options			options;
 
-	if (ac == 2)
+	if (ac == 1)
+		return (0);
+	ft_bzero(&options, sizeof(t_options));
+	i = mark_options(ac, av, &options, 1);
+	if (options.l)
+		ft_putchar('l');
+	if (options.big_r)
+		ft_putchar('R');
+	if (options.a)
+		ft_putchar('a');
+	if (options.r)
+		ft_putchar('r');
+	if (options.t)
+		ft_putchar('t');
+	ft_printf("\ni is %d\nthe next string is %s\n", i, av[i]);
+	dirp = opendir(".");
+	if (dirp == NULL)
 	{
-		name = av[1];
-		dirp = opendir(".");
-		if (dirp == NULL)
-		{
-			ft_printf("ERROR\n");
-			return (0);
-		}
-		len = ft_strlen(name);
-		while ((dp = readdir(dirp)) != NULL)
-		{
-			node = ft_memalloc(sizeof(t_file));
-			str = ft_strdup(str, dp->d_name);
-			node->fname = str;
-			ft_lstcat(&begin_list, ft_lstnew(node, sizeof(t_file)));
-			free(node);
+		ft_printf("ERROR\n");
+		return (0);
+	}
+	while ((dp = readdir(dirp)) != NULL)
+	{
+		node = ft_memalloc(sizeof(t_file));
+		str = ft_strdup(dp->d_name);
+		node->name = str;
+		ft_lstcat(&begin_list, ft_lstnew(node, sizeof(t_file)));
+		free(node);
 //			ft_printf("%s\n", dp->d_name);
 /*		}
-		}
-		if (dp == NULL)
-		{
-			ft_printf("NOT_FOUND\n");
-			(void)closedir(dirp);
-		}*/
-		}
+	}
+	if (dp == NULL)
+	{
+		ft_printf("NOT_FOUND\n");
 		(void)closedir(dirp);
-		if (begin_list)
+	}*/
+	}
+	(void)closedir(dirp);
+	if (begin_list)
+	{
+		sort_files(&begin_list);
+		scout = begin_list;
+		while (scout)
 		{
-			sort_files(&begin_list);
-			scout = begin_list;
-			while (scout)
-			{
-				node = scout->content;
+			node = scout->content;
 //				if (node->fname[0] != '.')
-					ft_printf("%s\n", node->fname);
-				scout = scout->next;
-			}
+				ft_printf("%s\n", node->name);
+			scout = scout->next;
 		}
-/*		ft_printf("%d\n", stat(name, &test));
-		if (errno)
-		{
-			ft_printf("%d is ERRNO\n", errno);
-			ft_printf("Oh dear, something went wrong with stat()! %s\n", strerror(errno));
-		}
-		else
-		{
-			ft_printf("Your eyes are so beautiful that you made no mistakes in the code this time! :%)\n");
-			ft_printf("%o is the file mode\n", test.st_mode);
-		}*/
 	}
 	return (0);
 }
