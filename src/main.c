@@ -6,66 +6,28 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:14:31 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/10 01:59:45 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/15 04:21:25 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-/*	int bufsize;
-	char buffer[bufsize];
-	struct passwd pwd, *result = NULL;
-
-	if ((bufsize = sysconf(_SC_GETPW_R_SIZE_MAX)) == -1)
-		abort();
-	if (getpwuid_r(getuid(), &pwd, buffer, bufsize, &result) != 0 || !result)
-		abort();
-	ft_printf("%s\n", pwd.pw_dir);*/
-
-void	sort_files(t_list **lst)
+void	print_elem(t_file *file)
 {
-	t_list	*hold;
-	t_list	*scout;
-	t_list	*trail;
-	t_file	*hnode;
-	t_file	*snode;
-
-	scout = *lst;
-	while (scout->next)
-	{
-		hold = scout;
-		hnode = hold->content;
-		scout = scout->next;
-		snode = scout->content;
-		if (*lst == hold && ft_strcmp(hnode->name, snode->name) > 0)
-		{
-			*lst = hold->next;
-			hold->next = scout->next;
-			scout->next = hold;
-		}
-		else if (ft_strcmp(hnode->name, snode->name) > 0)
-		{
-			trail->next = hold->next;
-			hold->next = scout->next;
-			scout->next = hold;
-			scout = *lst;
-		}
-		else
-			trail = hold;
-	}
+	ft_printf("name: %s\n"
+			"mode: %s\n"
+			"links: %u\n"
+			"owner: %s\n"
+			"group: %s\n"
+			"left: %p\n"
+			"right: %p\n", file->name, file->mode, file->links, file->owner,
+			file->group, file->left, file->right);
 }
 
 static int	mark_options(int ac, char **av, t_options *options, int i)
 {
 	char	*str;
 	int		j;
-
-	if (ac == 1)
-	{
-	   return (0);
-	   options = NULL;
-	}
-		
 
 	str = av[i];
 	while(i < ac && str[0] == '-')
@@ -83,6 +45,8 @@ static int	mark_options(int ac, char **av, t_options *options, int i)
 				options->r = 1;
 			else if (str[j] == 't')
 				options->t = 1;
+			else if (str[j] == 'S')
+				options->big_s = 1;
 		}
 		++i;
 		str = av[i];
@@ -90,34 +54,100 @@ static int	mark_options(int ac, char **av, t_options *options, int i)
 	return (i);
 }
 
+char check_type(mode_t mode)
+{
+	char	perm;
+
+	perm = '-';
+	if (S_ISDIR(mode))
+		perm = 'd';
+	else if (S_ISREG(mode))
+		perm = '-';
+	else if (S_ISLNK(mode))
+		perm = 'l';
+	else if (S_ISBLK(mode))
+		perm = 'b';
+	else if (S_ISCHR(mode))
+		perm = 'c';
+	else if (S_ISSOCK(mode))
+		perm = 's';
+	else if (S_ISFIFO(mode))
+		perm = 'p';
+	return (perm);
+}
+
+char *check_permissions(mode_t mode)
+{
+	char	*perm;
+
+	perm = ft_strnew(10);
+	perm = ft_memset(perm, '-', 10);
+	perm[0] = check_type(mode);
+	if (S_IRUSR & mode)
+		perm[1] = 'r';
+	if (S_IWUSR & mode)
+		perm[2] = 'w';
+	if (S_IXUSR & mode)
+		perm[3] = 'x';
+	if (S_IRGRP & mode)
+		perm[4] = 'r';
+	if (S_IWGRP & mode)
+		perm[5] = 'w';
+	if (S_IXGRP & mode)
+		perm[6] = 'x';
+	if (S_IROTH & mode)
+		perm[7] = 'r';
+	if (S_IWOTH & mode)
+		perm[8] = 'w';
+	if (S_IXOTH & mode)
+		perm[9] = 'x';
+	return (perm);
+}
+
+size_t	get_attributes(t_file *file, char *path)
+{
+	struct stat		st;
+	char			*tmp;
+	struct passwd	*pass;
+	struct group	*grp;
+
+	path = ft_strjoin(path, "/");
+	tmp = ft_strjoin(path, file->name);
+	if (lstat(tmp, &st) == -1)
+	{
+		ft_printf("lstat error\n");
+		return (1);
+	}
+	file->mode = ft_strdup(check_permissions(st.st_mode));
+	file->links = (unsigned int)st.st_nlink;
+	if ((pass = getpwuid(st.st_uid)))
+		file->owner = ft_strdup(pass->pw_name);
+	else
+		file->owner = ft_itoa(st.st_uid);
+	if ((grp = getgrgid(st.st_gid)))
+		file->group = ft_strdup(grp->gr_name);
+	else
+		file->group = ft_itoa(st.st_gid);
+	file->size = (unsigned int)st.st_size;
+	free(tmp);
+	free(path);
+	return (st.st_blocks);
+}
+
 int main(int ac, char **av)
 {
 	int				i;
 	DIR				*dirp;
 	struct dirent	*dp;
-//	struct stat		test;
-	t_list			*begin_list = NULL;
+	char			*path;
+	t_file			*tree_top = NULL;
 	t_file			*node;
-	char			*str;
-	t_list			*scout;
-	t_options			options;
+	t_options		options;
 
-	if (ac == 1)
-		return (0);
 	ft_bzero(&options, sizeof(t_options));
 	i = mark_options(ac, av, &options, 1);
-	if (options.l)
-		ft_putchar('l');
-	if (options.big_r)
-		ft_putchar('R');
-	if (options.a)
-		ft_putchar('a');
-	if (options.r)
-		ft_putchar('r');
-	if (options.t)
-		ft_putchar('t');
-	ft_printf("\ni is %d\nthe next string is %s\n", i, av[i]);
-	dirp = opendir(".");
+	path = i < ac ? (av[i]) : (".");
+	dirp = opendir(path);
 	if (dirp == NULL)
 	{
 		ft_printf("ERROR\n");
@@ -125,32 +155,20 @@ int main(int ac, char **av)
 	}
 	while ((dp = readdir(dirp)) != NULL)
 	{
-		node = ft_memalloc(sizeof(t_file));
-		str = ft_strdup(dp->d_name);
-		node->name = str;
-		ft_lstcat(&begin_list, ft_lstnew(node, sizeof(t_file)));
-		free(node);
-//			ft_printf("%s\n", dp->d_name);
-/*		}
-	}
-	if (dp == NULL)
-	{
-		ft_printf("NOT_FOUND\n");
-		(void)closedir(dirp);
-	}*/
+		if(!(node = ft_memalloc(sizeof(t_file))))
+			return (0);
+		node->left = NULL;
+		node->right = NULL;
+		node->name = ft_strdup(dp->d_name);
+		if (!options.a && node->name[0] == '.')
+		{
+			free(node);
+			continue ;
+		}
+		get_attributes(node, path); 
+		insert_elem(&tree_top, node, options);
 	}
 	(void)closedir(dirp);
-	if (begin_list)
-	{
-		sort_files(&begin_list);
-		scout = begin_list;
-		while (scout)
-		{
-			node = scout->content;
-//				if (node->fname[0] != '.')
-				ft_printf("%s\n", node->name);
-			scout = scout->next;
-		}
-	}
+	print_tree(tree_top, options);
 	return (0);
 }

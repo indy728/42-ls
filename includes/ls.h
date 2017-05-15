@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/10 01:36:36 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/15 03:08:53 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ typedef struct		s_file
 	unsigned int	size;
 	time_t			mod_time;
 	time_t			acc_time;
+	struct s_file	*left;
+	struct s_file	*right;
 }					t_file;
 
 typedef struct		s_options
@@ -57,5 +59,8 @@ typedef struct		s_options
 	char			t;
 	char			u;
 }					t_options;
+
+void	print_tree(t_file *file, t_options options);
+void	insert_elem(t_file **tree_top, t_file *new_leaf, t_options options);
 
 #endif

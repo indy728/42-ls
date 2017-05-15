@@ -6,7 +6,7 @@
 #    By: kmurray <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/24 00:13:00 by kmurray           #+#    #+#              #
-#    Updated: 2017/05/10 01:35:27 by kmurray          ###   ########.fr        #
+#    Updated: 2017/05/15 02:56:07 by kmurray          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ INC = $(addprefix -I,$(INC_PATH))
 INC_LFT = $(addprefix -I, $(addprefix $(LIBFT_PATH), $(INC_PATH)))
 
 OBJ_NAME = $(SRC_NAME:.c=.o)
-SRC_NAME = main.c
+SRC_NAME = main.c print_tree.c insert_elem.c
 
 all: $(NAME)
 
