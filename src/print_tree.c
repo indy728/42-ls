@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/15 23:17:32 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 00:17:55 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	print_recursive(t_file *file, t_options options)
 	}
 }
 
-void	print_tree(t_file *file, t_options options)
+void		print_tree(t_file *file, t_options options)
 {
 	print_recursive(file, options);
 }

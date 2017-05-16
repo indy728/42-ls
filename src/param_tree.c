@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 21:42:27 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/15 23:09:49 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 00:43:34 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,11 @@ static void	insert_params(t_params **root, t_params *node)
 	}
 }
 
-static void alpha_params(t_params *params, t_options *options)
+static void	alpha_params(t_params *params, t_options *options)
 {
 	if (params->left)
 		alpha_params(params->left, options);
+	ft_printf("%s:\n", params->param);
 	build_tree(params->param, options);
 	if (params->right)
 		alpha_params(params->right, options);
@@ -40,6 +41,7 @@ static void	destroy_ptree(t_params *params)
 	{
 		destroy_ptree(params->left);
 		destroy_ptree(params->right);
+		free(params->param);
 		free(params);
 	}
 }
@@ -52,10 +54,10 @@ void		param_tree(int ac, char **av, int i, t_options *options)
 	params = NULL;
 	while (i < ac)
 	{
-		if(!(node = ft_memalloc(sizeof(t_params))))
+		if (!(node = ft_memalloc(sizeof(t_params))))
 		{
 			perror("Error: ");
-			exit (1);
+			exit(1);
 		}
 		ft_bzero(node, sizeof(t_params));
 		node->param = ft_strdup(av[i]);

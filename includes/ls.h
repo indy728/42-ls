@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/15 22:45:03 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 00:05:47 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,6 @@ void	build_tree(char *path, t_options *options);
 size_t	get_attributes(t_file *file, char *path, t_options *options);
 void	list_recursive(char *path, t_file *root, t_options options);
 void	param_tree(int ac, char **av, int i, t_options *options);
+void	destroy_tree(t_file *root);
 
 #endif

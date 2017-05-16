@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/15 23:06:25 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 00:21:58 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ size_t	get_attributes(t_file *file, char *path, t_options *options)
 	if (lstat(path, &st) == -1)
 	{
 		perror("lstat error: ");
-		exit (1);
+		exit(1);
 	}
 	file->mode = ft_strdup(check_permissions(st.st_mode));
 	file->links = (unsigned int)st.st_nlink;

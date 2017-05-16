@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   destroy_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/08 19:14:31 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:23:13 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/16 00:07:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-int	main(int ac, char **av)
+void	destroy_tree(t_file *root)
 {
-	int				i;
-	t_options		options;
-
-	ft_bzero(&options, sizeof(t_options));
-	i = mark_options(ac, av, &options, 1);
-	if (i == ac)
-		build_tree(".", &options);
-	else
-		param_tree(ac, av, i, &options);
-	return (0);
+	if (root)
+	{
+		destroy_tree(root->left);
+		destroy_tree(root->right);
+		free(root->name);
+		free(root->mode);
+		free(root->group);
+		free(root);
+	}
 }

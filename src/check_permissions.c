@@ -6,13 +6,13 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 15:48:54 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/15 15:49:38 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 00:23:00 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-static char check_type(mode_t mode)
+static char	check_type(mode_t mode)
 {
 	char	perm;
 
@@ -34,7 +34,7 @@ static char check_type(mode_t mode)
 	return (perm);
 }
 
-char *check_permissions(mode_t mode)
+char		*check_permissions(mode_t mode)
 {
 	char	*perm;
 
