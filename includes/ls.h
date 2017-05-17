@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 23:32:01 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/17 01:24:27 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct		s_options
 {
 	char			big_a;
 	char			a;
-//	char			c;  use time when file was last changed for sorting or printing
+	char			c;
 //	char			d;	directories are listed as plain files and not searched
 //	char			f;	output is not sorted
 //	char			g;	suppresses owner name in -l format
@@ -64,7 +64,7 @@ typedef struct		s_options
 //	char			s; display block size before file info
 //	char			big_t; with -l, display complete time information of file
 	char			t;
-//	char			u; use time of last access for sorting
+	char			u;
 }					t_options;
 
 void	print_tree(t_file *file, t_options options);
