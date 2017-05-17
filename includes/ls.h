@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:05:47 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 17:16:00 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef struct		s_file
 	char			*group;
 	unsigned int	size;
 	time_t			mod_time;
+	long			mod_ntime;
 	time_t			acc_time;
 	struct s_file	*left;
 	struct s_file	*right;

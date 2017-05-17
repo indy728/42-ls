@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:21:58 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 17:20:25 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ size_t	get_attributes(t_file *file, char *path, t_options *options)
 		file->group = ft_itoa(st.st_gid);
 	file->size = (unsigned int)st.st_size;
 	file->mod_time = st.st_mtime;
+	file->mod_ntime = st.st_mtimespec.tv_nsec;
 	free(path);
 	return (st.st_blocks);
 }
