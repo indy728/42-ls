@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:07:37 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 22:39:49 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	destroy_tree(t_file *root)
 		free(root->name);
 		free(root->mode);
 		free(root->group);
+		if (root->link)
+			free(root->link);
 		free(root);
 	}
 }

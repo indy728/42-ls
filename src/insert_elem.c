@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 03:07:02 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 17:24:20 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 23:34:50 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	insert_elem(t_file **tree_top, t_file *new_leaf, t_options options)
 {
 	long	value;
 
+	value = 0;
 	if (*tree_top == NULL)
 		*tree_top = new_leaf;
 	else
@@ -24,10 +25,10 @@ void	insert_elem(t_file **tree_top, t_file *new_leaf, t_options options)
 			value = new_leaf->size - (*tree_top)->size;
 		else if (options.t)
 		{
-			if(!(value = new_leaf->mod_time - (*tree_top)->mod_time))
-				value = new_leaf->mod_ntime - (*tree_top)->mod_ntime;
+			if(!(value = new_leaf->time - (*tree_top)->time))
+				value = new_leaf->ntime - (*tree_top)->ntime;
 		}
-		else
+		if (!value)
 			value = ft_strcmp((*tree_top)->name, new_leaf->name);
 		value = options.r ? value *= -1 : value;
 		if (value > 0)

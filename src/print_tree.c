@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 17:24:44 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 22:42:30 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,12 @@ static void	print_recursive(t_file *file, t_options options)
 		if (options.l)
 		{
 			date = ft_strnew(13);
-			ft_printf("%10s %3u %8s %10s %6d %s %s\n", file->mode, file->links,
+			ft_printf("%10s %3u %8s %10s %6d %s %s", file->mode, file->nlink,
 					file->owner, file->group, file->size,
-					read_date(ctime(&file->mod_time), date), file->name);
+					read_date(ctime(&file->time), date), file->name);
+			if (file->link)
+				ft_printf(" -> %s", file->link);
+			ft_putendl("");
 			free(date);
 		}
 		else

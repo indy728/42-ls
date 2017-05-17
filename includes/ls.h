@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 17:16:00 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/16 23:32:01 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ typedef struct		s_file
 {
 	char			*name;
 	char			*mode;
-	unsigned int	links;
+	unsigned int	nlink;
 	char			*owner;
 	char			*group;
-	unsigned int	size;
-	time_t			mod_time;
-	long			mod_ntime;
+	int				size;
+	time_t			time;
+	long			ntime;
 	time_t			acc_time;
+	char			*link;
 	struct s_file	*left;
 	struct s_file	*right;
 }					t_file;
