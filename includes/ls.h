@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/17 01:24:27 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/18 00:43:31 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,11 @@
 # include <time.h>
 # include <stdio.h>
 
+# define USAGE "usage: ./ft_ls [-ARSTaclnrstu1]\n"
+# define OPTIONS "ARSTaclnrstu1"
+
+char				g_nl;
+
 typedef struct		s_file
 {
 	char			*name;
@@ -32,8 +37,8 @@ typedef struct		s_file
 	int				size;
 	time_t			time;
 	long			ntime;
-	time_t			acc_time;
 	char			*link;
+	int				blocks;
 	struct s_file	*left;
 	struct s_file	*right;
 }					t_file;
@@ -61,8 +66,8 @@ typedef struct		s_options
 	char			big_r;
 	char			r;
 	char			big_s;
-//	char			s; display block size before file info
-//	char			big_t; with -l, display complete time information of file
+	char			s;
+	char			big_t;
 	char			t;
 	char			u;
 }					t_options;

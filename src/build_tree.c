@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:34:58 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 17:24:38 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/18 00:45:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_file	*get_node(t_file *node, struct dirent *dp, t_options *options)
 {
 	if (!(node = ft_memalloc(sizeof(t_file))))
 	{
-		perror("Error: ");
+		perror("memory allocation error");
 		exit(1);
 	}
 	ft_bzero(node, sizeof(t_file));
@@ -44,10 +44,15 @@ static void		populate_tree(DIR *dirp, t_file *tree_top,
 	{
 		if (!(node = get_node(node, dp, options)))
 			continue ;
-		blocks += get_attributes(node, path, options);
+		blocks += (node->blocks = get_attributes(node, path, options));
 		insert_elem(&tree_top, node, *options);
 	}
 	(void)closedir(dirp);
+	if (g_nl)
+	{
+		ft_putendl("");
+		ft_printf("%s:\n", path);
+	}
 	if (options->l)
 		ft_printf("total %u\n", blocks);
 	print_tree(tree_top, *options);

@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/17 01:43:27 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/17 22:23:16 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static char	*get_link(char *path)
 	return (link);
 }
 
-static void get_time(t_file *file, struct stat st, t_options *options)
+static void	get_time(t_file *file, struct stat st, t_options *options)
 {
 	if (options->c)
 	{

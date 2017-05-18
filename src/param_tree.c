@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 21:42:27 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:43:34 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/17 22:09:50 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	alpha_params(t_params *params, t_options *options)
 {
 	if (params->left)
 		alpha_params(params->left, options);
-	ft_printf("%s:\n", params->param);
+//	ft_printf("%s:\n", params->param);
 	build_tree(params->param, options);
 	if (params->right)
 		alpha_params(params->right, options);
@@ -56,7 +56,7 @@ void		param_tree(int ac, char **av, int i, t_options *options)
 	{
 		if (!(node = ft_memalloc(sizeof(t_params))))
 		{
-			perror("Error: ");
+			perror("memory allocation error");
 			exit(1);
 		}
 		ft_bzero(node, sizeof(t_params));

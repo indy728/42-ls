@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 03:07:02 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 23:34:50 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/17 01:48:31 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	insert_elem(t_file **tree_top, t_file *new_leaf, t_options options)
 			value = new_leaf->size - (*tree_top)->size;
 		else if (options.t)
 		{
-			if(!(value = new_leaf->time - (*tree_top)->time))
+			if (!(value = new_leaf->time - (*tree_top)->time))
 				value = new_leaf->ntime - (*tree_top)->ntime;
 		}
 		if (!value)

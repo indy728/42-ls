@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 17:03:11 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/16 00:20:20 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/17 23:35:44 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	list_recursive(char *path, t_file *root, t_options options)
 	{
 		tmp = ft_strjoin(path, "/");
 		tmp = ft_strmove(ft_strjoin(tmp, root->name), &tmp);
-		ft_printf("\n%s:\n", tmp);
 		build_tree(tmp, &options);
 		free(tmp);
 	}

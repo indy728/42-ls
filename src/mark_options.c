@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 15:51:04 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/17 01:43:23 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/18 00:44:29 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	time_stamp(char op, t_options *options)
 {
-
 	if (op == 't')
 	{
 		options->c = 0;
@@ -33,28 +32,37 @@ static void	time_stamp(char op, t_options *options)
 	}
 }
 
-static void	check_box(char *str, int j, t_options *options)
+static void	check_box(char op, t_options *options)
 {
-	if (str[j] == 'l')
+	if (op == 'l')
 		options->l = 1;
-	else if (str[j] == 'R')
+	else if (op == 'R')
 		options->big_r = 1;
-	else if (str[j] == 'a')
+	else if (op == 'a')
 		options->a = 1;
-	else if (str[j] == 'r')
+	else if (op == 'r')
 		options->r = 1;
-	else if (str[j] == 't' || str[j] == 'c' || str[j] == 'u')
-		time_stamp(str[j], options);
-	else if (str[j] == 'S')
+	else if (op == 't' || op == 'c' || op == 'u')
+		time_stamp(op, options);
+	else if (op == 'S')
 		options->big_s = 1;
-	else if (str[j] == '1')
+	else if (op == '1')
 		options->l = 0;
-	else if (str[j] == 'A')
+	else if (op == 'T')
+		options->big_t = 1;
+	else if (op == 's')
+		options->s = 1;
+	else if (op == 'A')
 		options->big_a = 1;
-	else if (str[j] == 'n')
+	else if (op == 'n')
 	{
 		options->n = 1;
 		options->l = 1;
+	}
+	else
+	{
+		ft_putstr(USAGE);
+		exit(0);
 	}
 }
 
@@ -68,7 +76,7 @@ int			mark_options(int ac, char **av, t_options *options, int i)
 	{
 		j = 0;
 		while (str[++j])
-			check_box(str, j, options);
+			check_box(str[j], options);
 		++i;
 		str = av[i];
 	}
