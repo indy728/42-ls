@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 01:58:31 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:16:29 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,35 +19,39 @@ static char	*read_date(char *ctime, char *date, int n)
 	return (date);
 }
 
+static void	owner_group_ops(t_file *file, t_options *options, char *date)
+{
+	if (options->o && options->g)
+	{
+		ft_printf("%10s %2u %6d %s %s", file->mode, file->nlink,
+			file->size, date, file->name);
+	}
+	else if (options->o)
+	{
+		ft_printf("%10s %2u %7s %6d %s %s", file->mode, file->nlink,
+			file->owner, file->size, date, file->name);
+	}
+	else
+	{
+		ft_printf("%10s %2u %8s %6d %s %s", file->mode, file->nlink,
+			file->group, file->size, date, file->name);
+	}
+}
+
 static void	long_print(t_file *file, t_options *options, int n)
 {
 	char		*date;
 
 	date = ft_strnew(21);
+	date = read_date(ctime(&file->time), date, n);
 	if (options->s)
 		ft_printf("%2d ", file->blocks);
-	if (options->o && options->g)
-	{
-		ft_printf("%10s %2u %6d %s %s", file->mode, file->nlink,
-			file->size,	read_date(ctime(&file->time), date, n), file->name);
-	}
-	else if (options->o)
-	{
-		ft_printf("%10s %2u %7s %6d %s %s", file->mode, file->nlink,
-			file->owner, file->size,
-			read_date(ctime(&file->time), date, n), file->name);
-	}
-	else if (options->g)
-	{
-		ft_printf("%10s %2u %8s %6d %s %s", file->mode, file->nlink,
-			file->group, file->size,
-			read_date(ctime(&file->time), date, n), file->name);
-	}
+	if (options->o || options->g)
+		owner_group_ops(file, options, date);
 	else
 	{
 		ft_printf("%10s %2u %7s %8s %6d %s %s", file->mode, file->nlink,
-			file->owner, file->group, file->size,
-			read_date(ctime(&file->time), date, n), file->name);
+			file->owner, file->group, file->size, date, file->name);
 	}
 	if (options->p && file->mode[0] == 'd')
 		ft_printf("/");
