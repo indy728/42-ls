@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/08 19:14:31 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 01:56:07 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:31:04 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	three_trees(int ac, char **av, int i, t_options *options)
 			if (errno == 20)
 				ndir = param_tree(ndir, av[i], options);
 			else
-				err = err_tree(err, av[i], strerror(errno), options->r);
+				err = err_tree(err, av[i], strerror(errno), options);
 			errno = 0;
 		}
 		else

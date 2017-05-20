@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 02:25:55 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:30:37 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,8 @@ void				list_recursive(char *path, t_file *root,
 									t_options *options);
 t_file				*param_tree(t_file *root, char *path, t_options *options);
 void				destroy_tree(t_file *root);
-t_err				*err_tree(t_err *root, char *path, char *er_msg, char op);
+t_err				*err_tree(t_err *root, char *path, char *er_msg,
+									t_options *options);
 void				print_err(t_err *root);
 void				destroy_three_trees(t_err *err, t_file *ndir, t_file *dir);
 

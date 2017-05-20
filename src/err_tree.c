@@ -6,13 +6,13 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/19 19:06:23 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/19 21:33:29 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:31:16 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-static void	insert_err(t_err **root, t_err *node, char op)
+static void	insert_err(t_err **root, t_err *node, t_options *options)
 {
 	int	value;
 
@@ -22,15 +22,15 @@ static void	insert_err(t_err **root, t_err *node, char op)
 	else
 	{
 		value = ft_strcmp((*root)->path, node->path);
-		value = op ? value *= -1 : value;
-		if (value > 0)
-			insert_err(&(*root)->left, node, op);
+		value = options->r ? value *= -1 : value;
+		if (value > 0 && !options->f)
+			insert_err(&(*root)->left, node, options);
 		else
-			insert_err(&(*root)->right, node, op);
+			insert_err(&(*root)->right, node, options);
 	}
 }
 
-t_err		*err_tree(t_err *root, char *path, char *er_msg, char op)
+t_err		*err_tree(t_err *root, char *path, char *er_msg, t_options *options)
 {
 	t_err	*node;
 
@@ -42,6 +42,6 @@ t_err		*err_tree(t_err *root, char *path, char *er_msg, char op)
 	ft_bzero(node, sizeof(t_err));
 	node->path = ft_strdup(path);
 	node->er_msg = ft_strdup(er_msg);
-	insert_err(&root, node, op);
+	insert_err(&root, node, options);
 	return (root);
 }
