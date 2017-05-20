@@ -1,32 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_attributes.c                                   :+:      :+:    :+:   */
+/*   get_dirattributes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 00:44:27 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 00:14:51 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
-
-static char	*get_link(char *path)
-{
-	char	*link;
-	int		ret;
-	char	buf[1024];
-
-	if ((ret = readlink(path, buf, 1024)) == -1)
-	{
-		perror("readlink error");
-		exit(1);
-	}
-	buf[ret] = '\0';
-	link = ft_strdup(buf);
-	return (link);
-}
 
 static void	get_time(t_file *file, struct stat st, t_options *options)
 {
@@ -62,13 +46,11 @@ static void	get_id(t_file *file, t_options *options, struct stat st)
 		file->group = ft_itoa(st.st_gid);
 }
 
-size_t		get_attributes(t_file *file, char *path, t_options *options)
+size_t		get_dirattributes(t_file *file, t_options *options)
 {
 	struct stat		st;
 
-	path = ft_strjoin(path, "/");
-	path = ft_strmove(ft_strjoin(path, file->name), &path);
-	if (lstat(path, &st) == -1)
+	if (lstat(file->name, &st) == -1)
 	{
 		perror("lstat error");
 		exit(1);
@@ -78,8 +60,5 @@ size_t		get_attributes(t_file *file, char *path, t_options *options)
 	get_id(file, options, st);
 	get_time(file, st, options);
 	file->size = (unsigned int)st.st_size;
-	if (file->mode[0] == 'l')
-		file->link = get_link(path);
-	free(path);
 	return (st.st_blocks);
 }

@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 15:51:04 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/18 00:44:29 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/19 21:42:29 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,21 @@ static void	time_stamp(char op, t_options *options)
 	}
 }
 
+static void long_display(char op, t_options *options)
+{
+	options->l = 1;
+	if (op == 'o')
+		options->o = 1;
+	else if (op == 'g')
+		options->g = 1;
+	else if (op == 'n')
+		options->n = 1;
+}
+
 static void	check_box(char op, t_options *options)
 {
-	if (op == 'l')
-		options->l = 1;
+	if (op == 'l' || op == 'g' || op == 'o' || op == 'n')
+		long_display(op, options);
 	else if (op == 'R')
 		options->big_r = 1;
 	else if (op == 'a')
@@ -54,11 +65,10 @@ static void	check_box(char op, t_options *options)
 		options->s = 1;
 	else if (op == 'A')
 		options->big_a = 1;
-	else if (op == 'n')
-	{
-		options->n = 1;
-		options->l = 1;
-	}
+	else if (op == 'p')
+		options->p = 1;
+	else if (op == 'f')
+		options->f = 1;
 	else
 	{
 		ft_putstr(USAGE);

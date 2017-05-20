@@ -6,64 +6,24 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 21:42:27 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/17 22:09:50 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:01:10 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-static void	insert_params(t_params **root, t_params *node)
+t_file		*param_tree(t_file *root, char *path, t_options *options)
 {
-	if (!*root)
-		*root = node;
-	else
+	t_file	*node;
+
+	if (!(node = ft_memalloc(sizeof(t_file))))
 	{
-		if (ft_strcmp((*root)->param, node->param) >= 0)
-			insert_params(&(*root)->left, node);
-		else
-			insert_params(&(*root)->right, node);
+		perror("memory allocation error");
+		exit(1);
 	}
-}
-
-static void	alpha_params(t_params *params, t_options *options)
-{
-	if (params->left)
-		alpha_params(params->left, options);
-//	ft_printf("%s:\n", params->param);
-	build_tree(params->param, options);
-	if (params->right)
-		alpha_params(params->right, options);
-}
-
-static void	destroy_ptree(t_params *params)
-{
-	if (params)
-	{
-		destroy_ptree(params->left);
-		destroy_ptree(params->right);
-		free(params->param);
-		free(params);
-	}
-}
-
-void		param_tree(int ac, char **av, int i, t_options *options)
-{
-	t_params	*params;
-	t_params	*node;
-
-	params = NULL;
-	while (i < ac)
-	{
-		if (!(node = ft_memalloc(sizeof(t_params))))
-		{
-			perror("memory allocation error");
-			exit(1);
-		}
-		ft_bzero(node, sizeof(t_params));
-		node->param = ft_strdup(av[i]);
-		insert_params(&params, node);
-		++i;
-	}
-	alpha_params(params, options);
-	destroy_ptree(params);
+	ft_bzero(node, sizeof(t_file));
+	node->name = ft_strdup(path);
+	node->blocks = get_dirattributes(node, options);
+	insert_elem(&root, node, options);
+	return (root);
 }

@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:34:58 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/18 00:45:37 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 02:00:22 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,12 @@ static void		populate_tree(DIR *dirp, t_file *tree_top,
 		if (!(node = get_node(node, dp, options)))
 			continue ;
 		blocks += (node->blocks = get_attributes(node, path, options));
-		insert_elem(&tree_top, node, *options);
+		insert_elem(&tree_top, node, options);
 	}
 	(void)closedir(dirp);
-	if (g_nl)
-	{
-		ft_putendl("");
-		ft_printf("%s:\n", path);
-	}
-	if (options->l)
-		ft_printf("total %u\n", blocks);
-	print_tree(tree_top, *options);
-	if (options->big_r)
-		list_recursive(path, tree_top, *options);
+	print_tree(tree_top, options, path, blocks);
+	if (tree_top && options->big_r)
+		list_recursive(path, tree_top, options);
 	destroy_tree(tree_top);
 }
 

@@ -1,31 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list_recursive.c                                   :+:      :+:    :+:   */
+/*   destroy_three_trees.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/15 17:03:11 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 02:00:53 by kmurray          ###   ########.fr       */
+/*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
+/*   Updated: 2017/05/19 21:10:32 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-void	list_recursive(char *path, t_file *root, t_options *options)
+static void	destroy_err(t_err *err)
 {
-	char	*tmp;
-
-	if (root->left)
-		list_recursive(path, root->left, options);
-	if (root->mode[0] == 'd' && ft_strcmp(".", root->name) &&
-			ft_strcmp("..", root->name))
+	if (err)
 	{
-		tmp = ft_strjoin(path, "/");
-		tmp = ft_strmove(ft_strjoin(tmp, root->name), &tmp);
-		build_tree(tmp, options);
-		free(tmp);
+		destroy_err(err->left);
+		destroy_err(err->right);
+		if (err->path)
+			ft_strdel(&err->path);
+		if (err->er_msg)
+			ft_strdel(&err->er_msg);
+		free(err);
 	}
-	if (root->right)
-		list_recursive(path, root->right, options);
+}
+
+void		destroy_three_trees(t_err *err, t_file *ndir, t_file *dir)
+{
+	destroy_err(err);
+	destroy_tree(ndir);
+	destroy_tree(dir);
 }

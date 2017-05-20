@@ -6,7 +6,7 @@
 #    By: kmurray <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/04/24 00:13:00 by kmurray           #+#    #+#              #
-#    Updated: 2017/05/16 00:05:00 by kmurray          ###   ########.fr        #
+#    Updated: 2017/05/20 00:14:35 by kmurray          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,8 @@ INC_LFT = $(addprefix -I, $(addprefix $(LIBFT_PATH), $(INC_PATH)))
 OBJ_NAME = $(SRC_NAME:.c=.o)
 SRC_NAME = main.c print_tree.c insert_elem.c check_permissions.c\
 		mark_options.c build_tree.c get_attributes.c list_recursive.c\
-		param_tree.c destroy_tree.c
+		param_tree.c destroy_tree.c err_tree.c print_err.c\
+		destroy_three_trees.c get_dirattributes.c
 
 all: $(NAME)
 

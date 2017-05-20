@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/17 23:31:20 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 01:58:31 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,57 @@ static char	*read_date(char *ctime, char *date, int n)
 	return (date);
 }
 
-static void	print_recursive(t_file *file, t_options options)
+static void	long_print(t_file *file, t_options *options, int n)
 {
 	char		*date;
+
+	date = ft_strnew(21);
+	if (options->s)
+		ft_printf("%2d ", file->blocks);
+	if (options->o && options->g)
+	{
+		ft_printf("%10s %2u %6d %s %s", file->mode, file->nlink,
+			file->size,	read_date(ctime(&file->time), date, n), file->name);
+	}
+	else if (options->o)
+	{
+		ft_printf("%10s %2u %7s %6d %s %s", file->mode, file->nlink,
+			file->owner, file->size,
+			read_date(ctime(&file->time), date, n), file->name);
+	}
+	else if (options->g)
+	{
+		ft_printf("%10s %2u %8s %6d %s %s", file->mode, file->nlink,
+			file->group, file->size,
+			read_date(ctime(&file->time), date, n), file->name);
+	}
+	else
+	{
+		ft_printf("%10s %2u %7s %8s %6d %s %s", file->mode, file->nlink,
+			file->owner, file->group, file->size,
+			read_date(ctime(&file->time), date, n), file->name);
+	}
+	if (options->p && file->mode[0] == 'd')
+		ft_printf("/");
+	if (file->link)
+		ft_printf(" -> %s", file->link);
+	ft_putendl("");
+	ft_strdel(&date);
+}
+
+static void	print_recursive(t_file *file, t_options *options)
+{
 	int			n;
 
 	n = 13;
-	if (options.big_t)
+	if (options->big_t)
 		n = 21;
 	if (file)
 	{
 		if (file->left)
 			print_recursive(file->left, options);
-		if (options.l)
-		{
-			date = ft_strnew(21);
-			if (options.s)
-				ft_printf("%2d ", file->blocks);
-			ft_printf("%10s %2u %7s %8s %6d %s %s", file->mode, file->nlink,
-					file->owner, file->group, file->size,
-					read_date(ctime(&file->time), date, n), file->name);
-			if (file->link)
-				ft_printf(" -> %s", file->link);
-			ft_putendl("");
-			free(date);
-		}
+		if (options->l)
+			long_print(file, options, n);
 		else
 			ft_printf("%s\n", file->name);
 		if (file->right)
@@ -51,8 +77,20 @@ static void	print_recursive(t_file *file, t_options options)
 	}
 }
 
-void		print_tree(t_file *file, t_options options)
+void		print_tree(t_file *file, t_options *options,
+								char *path, unsigned int blocks)
 {
-	print_recursive(file, options);
-	g_nl = 1;
+	if (options->nl)
+		ft_putendl("");
+	if (options->folder)
+		ft_printf("%s:\n", path);
+	if (file)
+	{
+		if (options->l && options->total)
+			ft_printf("total %u\n", blocks);
+		print_recursive(file, options);
+		options->nl = 1;
+	}
+	options->folder = 1;
+	options->total = 1;
 }
