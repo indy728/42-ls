@@ -6,16 +6,30 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 02:57:09 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 02:16:29 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/24 00:08:52 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-static char	*read_date(char *ctime, char *date, int n)
+static char	*read_date(time_t *ftime, char *date, int n)
 {
-	date = ft_strncat(date, ctime + 4, n - 1);
-	date[n] = '\0';
+	char	*dtime;
+	time_t	now;
+
+	dtime = ctime(ftime);
+	if (time(&now) - *ftime < SIXMO || n == 21)
+	{
+		date = ft_strncat(date, dtime + 4, n - 1);
+		date[n] = '\0';
+	}
+	else
+	{
+		date = ft_strncat(date, dtime + 4, 7);
+		date = ft_strcat(date, " ");
+		date = ft_strncat(date, dtime + 20, 4);
+		date[n] = '\0';
+	}
 	return (date);
 }
 
@@ -43,7 +57,7 @@ static void	long_print(t_file *file, t_options *options, int n)
 	char		*date;
 
 	date = ft_strnew(21);
-	date = read_date(ctime(&file->time), date, n);
+	date = read_date(&file->time, date, n);
 	if (options->s)
 		ft_printf("%2d ", file->blocks);
 	if (options->o || options->g)

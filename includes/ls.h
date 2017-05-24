@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/24 00:30:12 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 02:30:37 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/23 23:44:19 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <stdio.h>
 
 # define USAGE "usage: ./ft_ls [-ARSTacfglnoprstu1]\n"
+# define SIXMO 15778463
 
 typedef struct		s_file
 {

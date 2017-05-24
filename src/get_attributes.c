@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 00:44:27 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/23 23:13:32 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,22 @@ static void	get_id(t_file *file, t_options *options, struct stat st)
 size_t		get_attributes(t_file *file, char *path, t_options *options)
 {
 	struct stat		st;
+	char			*tmp;
 
-	path = ft_strjoin(path, "/");
-	path = ft_strmove(ft_strjoin(path, file->name), &path);
+	tmp = ft_strjoin(path, "/");
+	path = ft_strmove(ft_strjoin(tmp, file->name), &tmp);
 	if (lstat(path, &st) == -1)
 	{
 		perror("lstat error");
 		exit(1);
 	}
-	file->mode = ft_strdup(check_permissions(st.st_mode));
+	file->mode = check_permissions(st.st_mode);
 	file->nlink = (unsigned int)st.st_nlink;
 	get_id(file, options, st);
 	get_time(file, st, options);
 	file->size = (unsigned int)st.st_size;
 	if (file->mode[0] == 'l')
 		file->link = get_link(path);
-	free(path);
+	ft_strdel(&path);
 	return (st.st_blocks);
 }

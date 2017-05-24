@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/19 21:10:32 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 03:27:58 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static void	destroy_err(t_err *err)
 		if (err->er_msg)
 			ft_strdel(&err->er_msg);
 		free(err);
+		err = NULL;
 	}
 }
 

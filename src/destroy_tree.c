@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 23:57:07 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/19 20:45:51 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/23 23:20:54 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ void	destroy_tree(t_file *root)
 		destroy_tree(root->right);
 		ft_strdel(&root->name);
 		ft_strdel(&root->mode);
+		ft_strdel(&root->owner);
 		ft_strdel(&root->group);
-		if (root->link)
-			ft_strdel(&root->link);
+		ft_strdel(&root->link);
 		free(root);
+		root = NULL;
 	}
 }

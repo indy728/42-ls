@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:34:58 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 02:00:22 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/20 03:34:52 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_file	*get_node(t_file *node, struct dirent *dp, t_options *options)
 		!ft_strcmp("..", node->name))) ||
 		(!options->a && !options->big_a && node->name[0] == '.'))
 	{
-		free(node->name);
+		ft_strdel(&node->name);
 		free(node);
 		node = NULL;
 	}

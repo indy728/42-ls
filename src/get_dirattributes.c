@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 16:51:40 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/20 00:14:51 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/23 23:16:03 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ size_t		get_dirattributes(t_file *file, t_options *options)
 		perror("lstat error");
 		exit(1);
 	}
-	file->mode = ft_strdup(check_permissions(st.st_mode));
+	file->mode = check_permissions(st.st_mode);
 	file->nlink = (unsigned int)st.st_nlink;
 	get_id(file, options, st);
 	get_time(file, st, options);
