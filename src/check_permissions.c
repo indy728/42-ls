@@ -6,7 +6,7 @@
 /*   By: kmurray <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/15 15:48:54 by kmurray           #+#    #+#             */
-/*   Updated: 2017/05/23 23:12:50 by kmurray          ###   ########.fr       */
+/*   Updated: 2017/05/24 00:56:46 by kmurray          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ static char	check_type(mode_t mode)
 	return (isdir);
 }
 
+static void	check_idsticky(char *permissions, mode_t mode)
+{
+	if (S_ISUID & mode)
+		permissions[3] = permissions[3] == 'x' ? 's' : 'S';
+	if (S_ISGID & mode)
+		permissions[6] = permissions[6] == 'x' ? 's' : 'S';
+	if (S_ISVTX & mode)
+		permissions[9] = permissions[9] == 'x' ? 't' : 'T';
+}
+
 char		*check_permissions(mode_t mode)
 {
 	char	*permissions;
@@ -59,5 +69,6 @@ char		*check_permissions(mode_t mode)
 		permissions[8] = 'w';
 	if (S_IXOTH & mode)
 		permissions[9] = 'x';
+	check_idsticky(permissions, mode);
 	return (permissions);
 }
